@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin, UserPassesTestMixin
 import random
 import secrets
 
@@ -51,9 +51,15 @@ def email_verification(request, code):
     return HttpResponseRedirect("/users/login/")
 
 
-class UserListView(ListView):
+class UserListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = User
     template_name = "users_app/users_list.html"
+
+    def test_func(self):
+        user = self.request.user
+        if user.is_superuser or user.is_staff:
+            return True
+        return False
 
 
 class UserUpdateView(PermissionRequiredMixin, UpdateView):  # Очередность имеет значение

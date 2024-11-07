@@ -4,7 +4,7 @@
 <br>
 <div class="container">
     <div class="text-end">
-        {% if not user.is_staff %}
+        {% if not user.is_staff or user.is_superuser %}
             <a class="btn btn-outline-secondary" href="{% url 'mailings:client_create' %}">Добавить клиента</a>
         {% endif %}
     </div>
