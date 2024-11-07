@@ -38,10 +38,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
     "mailings",
     "users",
-    'django_apscheduler',
+    "django_apscheduler",
 ]
 
 MIDDLEWARE = [
@@ -80,12 +79,12 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 DATABASES = {
     "default": {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'course_6',
-        'USER': 'postgres',
-        'HOST': '127.0.0.1',
-        'PORT': 5432,
-        'PASSWORD': '2468'
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "course_6",
+        "USER": "postgres",
+        "HOST": "127.0.0.1",
+        "PORT": 5432,
+        "PASSWORD": "2468",
     }
 }
 
@@ -126,36 +125,34 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
-STATICFILES_DIRS = (
-    BASE_DIR / 'static',
-)
+STATICFILES_DIRS = (BASE_DIR / "static",)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
 
-AUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL = "users.User"
 
-LOGIN_REDIRECT_URL = '/mailings_list/'
-LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = "/mailings_list/"
+LOGOUT_REDIRECT_URL = "/"
 # REDIRECT_LOGIN_URL = '/users/login'
 # LOGIN_URL = '/users/login/'
 #
-EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_HOST = "smtp.yandex.ru"
 EMAIL_PORT = 465
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
-EMAIL_HOST_USER = 'rolissk@yandex.com'
-EMAIL_HOST_PASSWORD = 'lheodsngqlceobtz'
+EMAIL_HOST_USER = "rolissk@yandex.com"
+EMAIL_HOST_PASSWORD = "lheodsngqlceobtz"
 
 SERVER_EMAIL = EMAIL_HOST_USER
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-APSCHEDULER_DATETIME_FORMAT = 'N j, Y, f:s a'
+APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
 APSCHEDULER_RUN_NOW_TIMEOUT = 25  # Seconds
 
 # CACHE_ENABLED = True

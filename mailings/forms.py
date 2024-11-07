@@ -8,33 +8,34 @@ class StyleMixin(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         for field_name, field in self.fields.items():
-            #if field_name != 'current_version_indicator' and field_name != 'publication_sign' and field_name != 'is_published':
+            # if field_name != 'current_version_indicator' and field_name != 'publication_sign' and field_name != 'is_published':
             field.widget.attrs["class"] = "form-control"
 
 
 class MailingForm(StyleMixin):
 
-    def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop('request')
-        user = self.request.user
-        super().__init__(self, *args, **kwargs)
-        self.fields['clients'].queryset = Client.objects.filter(owner=user)
-
+    # def __init__(self, *args, **kwargs):
+    #     self.request = kwargs.pop('request')
+    #     user = self.request.user
+    #     user.save()
+    #     super().__init__(self, *args, **kwargs)
+    #     if self.request and user:
+    #         self.fields['clients'].queryset = Client.objects.filter(owner=user)
 
     class Meta:
         model = Mailing
-        fields = '__all__'
+        fields = "__all__"
 
 
 class MessageForm(StyleMixin):
 
     class Meta:
         model = Message
-        fields = '__all__'
+        fields = "__all__"
 
 
 class ClientForm(StyleMixin):
 
     class Meta:
         model = Client
-        fields = '__all__'
+        fields = "__all__"
