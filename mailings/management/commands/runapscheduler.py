@@ -4,8 +4,8 @@ from mailings.models import Mailing, Log
 
 import logging
 from django.core.mail import send_mail
-from django.conf import settings
-
+# from django.conf import settings
+from config import settings
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
 from django.core.management.base import BaseCommand
@@ -45,11 +45,16 @@ def start_or_not_mailing():
 def send_mailings(mailing):
     Log.objects.create(answer_server='Отправлено', mailing=mailing)
     title = mailing.message.title
-    body = mailing.message.message
+    message = mailing.message.message
     from_email = settings.EMAIL_HOST_USER
     to_emails = [client.email for client in mailing.clients.all()]
-    send_mail(title, body, from_email, to_emails,)
-
+    # send_mail(title, message, from_email, to_emails,)
+    send_mail(
+        subject=title,
+        message=message,
+        from_email=settings.EMAIL_HOST_USER,
+        recipient_list=[to_emails],
+    )
 
 def add_job(mailing):
     if mailing.period == 'daily':

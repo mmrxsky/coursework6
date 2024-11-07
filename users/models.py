@@ -7,6 +7,8 @@ class User(AbstractUser):
     phone = models.CharField(max_length=50, verbose_name='Телефон', blank=True, null=True)
     country = models.CharField(max_length=50, verbose_name='Страна', blank=True, null=True)
 
+    code = models.CharField(max_length=100, verbose_name='Сгенерированный пароль', blank=True, null=True)
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 

@@ -10,6 +10,7 @@
     <br>
     <div class="row">
                 {% for object in object_list %}
+<!--                {% if object.owner == user %}-->
                 <div class="col">
                     <div class="card text-center">
                         <div class="card-header">
@@ -37,6 +38,7 @@
 
                     </div>
                 </div>
+<!--                {% endif %}-->
                 {% endfor %}
     </div>
 </div>
