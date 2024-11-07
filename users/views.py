@@ -56,7 +56,7 @@ class UserListView(ListView):
     template_name = "users_app/users_list.html"
 
 
-class UserUpdateView(PermissionRequiredMixin, UpdateView): #  Очередность имеет значение
+class UserUpdateView(PermissionRequiredMixin, UpdateView):  # Очередность имеет значение
     model = User
     template_name = "users_app/update_user.html"
     form_class = UserUpdateForm

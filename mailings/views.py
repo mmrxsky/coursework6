@@ -16,6 +16,7 @@ from mailings.forms import MailingForm, MessageForm, ClientForm, MailingChangeSt
 from mailings.models import Mailing, Message, Client, Log
 from blog.models import Blog
 
+
 class StartPageView(TemplateView):
     template_name = "mailings_app/index.html"
 
@@ -39,6 +40,7 @@ class StartPageView(TemplateView):
 
         return context_data
 
+
 class MailingsListView(ListView):
     model = Mailing
     template_name = "mailings_app/mailings_list.html"
@@ -61,7 +63,6 @@ class MailingsCreateView(CreateView):
         kwargs.update({'request': self.request})
         return kwargs
 
-
     def form_valid(self, form):
         """Добавление владельца рассылке"""
         mailing = form.save()
@@ -82,6 +83,7 @@ class MailingsUpdateView(UpdateView):
         # if not self.request.user.is_superuser:
         kwargs.update({'request': self.request})
         return kwargs
+
 
 class MailingsDeleteView(DeleteView):
     model = Mailing

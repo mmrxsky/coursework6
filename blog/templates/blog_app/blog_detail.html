@@ -4,8 +4,10 @@
 <div class="container">
     <h1 class="text-center">{{object.title}}</h1>
     <div class="text-end">
+        {% if user.is_superuser %}
             <a class="btn btn-outline-secondary" href="{% url 'blog:blog_update' object.pk %}">Редактировать</a>
             <a class="btn btn-outline-danger" href="{% url 'blog:blog_delete' object.pk %}">Удалить</a>
+        {% endif %}
     </div>
 
     <div class="container">
