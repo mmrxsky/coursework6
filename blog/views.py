@@ -1,3 +1,4 @@
+from blog.services import get_data_from_cache
 from django.shortcuts import render
 
 from django.urls import reverse_lazy
@@ -18,6 +19,9 @@ from django.views.generic import (
 class BlogListView(ListView):
     model = Blog
     template_name = "blog_app/blog_list.html"
+
+    def get_queryset(self):
+        return get_data_from_cache()
 
 
 class BlogDetailView(LoginRequiredMixin, DetailView):

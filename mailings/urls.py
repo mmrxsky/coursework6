@@ -28,7 +28,7 @@ app_name = MailingsConfig.name
 
 
 urlpatterns = [
-    path("", StartPageView.as_view(), name="start_page"),
+    path("", cache_page(60)(StartPageView.as_view()), name="start_page"),
 
 
     path("mailings_list/", MailingsListView.as_view(), name="mailings_list"),
