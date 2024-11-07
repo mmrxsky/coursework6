@@ -1,0 +1,39 @@
+{% extends 'mailings_app/base.html' %}
+
+{% block content %}
+<br>
+<div class="container">
+    <div class="text-end">
+        <a class="btn btn-outline-secondary" href="{% url 'mailings:client_create' %}">Добавить клиента</a>
+    </div>
+    <br>
+    <div class="row">
+                {% for object in object_list %}
+                <div class="col">
+                    <div class="card text-center">
+                        <div class="card-header">
+                            Клиент: {{object.name}}
+                        </div>
+                        <div class="card-body">
+
+                            <p class="card-text">Email: {{object.email}}</p>
+                            <p class="card-text">Примечание: {{object.comment}}</p>
+
+
+                            <a href="{% url 'mailings:client_detail' object.pk %}" class="btn btn-primary">Подробнее</a>
+
+                        </div>
+                        <div class="card-footer">
+                            <h6>
+
+                            </h6>
+                        </div>
+
+
+                    </div>
+                </div>
+                {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

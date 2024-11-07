@@ -2,15 +2,17 @@ from django.forms import inlineformset_factory
 from django.shortcuts import render
 from django.urls import reverse_lazy
 
+# Create your views here.
+
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from mailings.forms import MailingForm, MessageForm
-from mailings.models import Mailing, Message
+from mailings.forms import MailingForm, MessageForm, ClientForm
+from mailings.models import Mailing, Message, Client
 
 
 class StartPageView(TemplateView):
-
     template_name = 'mailings_app/index.html'
+
 
 class MailingsListView(ListView):
     model = Mailing
@@ -28,17 +30,6 @@ class MailingsCreateView(CreateView):
     form_class = MailingForm
     success_url = reverse_lazy('mailings:mailings_list')
 
-    def get_context_data(self, **kwargs):
-        context_data = super().get_context_data(**kwargs)
-        MessageFormset = inlineformset_factory(Mailing, Message, form=MessageForm, extra=1)
-
-        if self.request.method == 'POST':
-            formset = MessageFormset(self.request.POST, instance=self.object)
-        else:
-            formset = MessageFormset(instance=self.object)
-        context_data['formset'] = formset
-        return context_data
-
 
 class MailingsUpdateView(UpdateView):
     model = Mailing
@@ -51,3 +42,33 @@ class MailingsDeleteView(DeleteView):
     model = Mailing
     template_name = 'mailings_app/mailings_confirm_delete.html'
     success_url = reverse_lazy('mailings:mailings_list')
+
+
+class ClientListView(ListView):
+    model = Client
+    template_name = 'mailings_app/client_list.html'
+
+
+class ClientDetailView(DetailView):
+    model = Client
+    template_name = 'mailings_app/client_detail.html'
+
+
+class ClientCreateView(CreateView):
+    model = Client
+    template_name = 'mailings_app/client_form.html'
+    form_class = ClientForm
+    success_url = reverse_lazy('mailings_app:client_list')
+
+
+class ClientUpdateView(UpdateView):
+    model = Client
+    template_name = 'mailings_app/client_form.html'
+    form_class = ClientForm
+    success_url = reverse_lazy('mailings_app:client_list')
+
+
+class ClientDeleteView(DeleteView):
+    model = Client
+    template_name = 'mailings_app/client_confirm_delete.html'
+    success_url = reverse_lazy('mailings_app:client_list')
