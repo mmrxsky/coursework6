@@ -22,7 +22,11 @@
 
 
                             <a href="{% url 'mailings:mailings_detail' object.pk %}" class="btn btn-primary">Подробнее</a>
-
+                            <div>
+                                <br>
+                                <p>Владелец:</p>
+                                <p>{{object.owner}}</p>
+                            </div>
                         </div>
                         <div class="card-footer">
                             <h6>
