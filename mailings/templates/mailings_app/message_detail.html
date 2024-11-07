@@ -1,0 +1,41 @@
+{% extends 'mailings_app/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-center">Название сообщения: {{object.title}}</h1>
+    <div class="text-end">
+            <a class="btn btn-outline-secondary" href="{% url 'mailings:message_update' object.pk %}">Редактировать</a>
+            <a class="btn btn-outline-danger" href="{% url 'mailings:message_delete' object.pk %}">Удалить</a>
+    </div>
+
+    <div class="container">
+        <br>
+        <div class="row">
+            <div class="col-3">
+                <div class="card text-center" style="width: 18rem;">
+
+                    <div class="card-body">
+                        <p class="card-text">Сообщение: {{object.message}}</p>
+
+
+                    </div>
+                    <div class="card-footer">
+                        <h6>
+
+                        </h6>
+                    </div>
+                </div>
+            </div>
+            <div  class="col-6">
+                <p>
+
+                </p>
+            </div>
+                <div class="col-3">
+
+                </div>
+
+        </div>
+    </div>
+    </div>
+{% endblock %}

@@ -58,17 +58,42 @@ class ClientCreateView(CreateView):
     model = Client
     template_name = 'mailings_app/client_form.html'
     form_class = ClientForm
-    success_url = reverse_lazy('mailings_app:client_list')
+    success_url = reverse_lazy('mailings:client_list')
 
 
 class ClientUpdateView(UpdateView):
     model = Client
     template_name = 'mailings_app/client_form.html'
     form_class = ClientForm
-    success_url = reverse_lazy('mailings_app:client_list')
+    success_url = reverse_lazy('mailings:client_list')
 
 
 class ClientDeleteView(DeleteView):
     model = Client
     template_name = 'mailings_app/client_confirm_delete.html'
-    success_url = reverse_lazy('mailings_app:client_list')
+    success_url = reverse_lazy('mailings:client_list')
+
+class MessageListView(ListView):
+        model = Message
+        template_name = 'mailings_app/message_list.html'
+
+class MessageDetailView(DetailView):
+        model = Message
+        template_name = 'mailings_app/message_detail.html'
+
+class MessageCreateView(CreateView):
+        model = Message
+        template_name = 'mailings_app/message_form.html'
+        form_class = MessageForm
+        success_url = reverse_lazy('mailings:message_list')
+
+class MessageUpdateView(UpdateView):
+        model = Message
+        template_name = 'mailings_app/message_form.html'
+        form_class = MessageForm
+        success_url = reverse_lazy('mailings:message_list')
+
+class MessageDeleteView(DeleteView):
+        model = Message
+        template_name = 'mailings_app/message_confirm_delete.html'
+        success_url = reverse_lazy('mailings:message_list')
