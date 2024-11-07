@@ -1,5 +1,8 @@
 from django.utils import timezone
+
 from django.db import models
+
+from users.models import User
 
 NULLABLE = {'blank': True, 'null': True}
 
@@ -9,7 +12,7 @@ class Client(models.Model):
     email = models.EmailField()
     name = models.CharField(max_length=50, verbose_name='Имя')
     comment = models.TextField(verbose_name='Примечание', **NULLABLE)
-
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Владелец', **NULLABLE)
     def __str__(self):
         return f'{self.name} ({self.email})'
 
@@ -23,7 +26,7 @@ class Message(models.Model):
 
     title = models.CharField(max_length=50, verbose_name='Тема сообщения', **NULLABLE)
     message = models.TextField(verbose_name='Сообщение')
-
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Владелец', **NULLABLE)
     def __str__(self):
         return f'{self.title}'
 
@@ -58,6 +61,8 @@ class Mailing(models.Model):
     message = models.ForeignKey(Message, on_delete=models.CASCADE, verbose_name='Сообщение')
     clients = models.ManyToManyField(Client, verbose_name='Клиенты')
 
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Владелец', **NULLABLE)
+
     def __str__(self):
         return f'{self.time_start} ({self.period})'
 
@@ -81,6 +86,8 @@ class Log(models.Model):
     answer_server = models.TextField(verbose_name='Ответ сервера', **NULLABLE)
 
     mailing = models.ForeignKey(Mailing, on_delete=models.CASCADE, verbose_name='Рассылка')
+
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Владелец', **NULLABLE)
 
     class Meta:
 

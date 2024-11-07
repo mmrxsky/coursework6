@@ -1,0 +1,1 @@
+[{"model": "mailings.mailing", "pk": 1, "fields": {"time_start": "09:00:00", "time_end": "10:00:00", "period": "daily", "status": "created", "message": 1, "clients": [1]}}, {"model": "mailings.mailing", "pk": 2, "fields": {"time_start": "15:00:00", "time_end": "16:00:00", "period": "daily", "status": "created", "message": 2, "clients": [1]}}]

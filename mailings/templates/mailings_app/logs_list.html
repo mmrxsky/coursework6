@@ -1,0 +1,35 @@
+{% extends 'mailings_app/base.html' %}
+
+{% block content %}
+<br>
+<div class="container">
+
+    <br>
+    <div class="row">
+                {% for object in object_list %}
+                <div class="col">
+                    <div class="card text-center">
+                        <div class="card-header">
+                            Дата и время: {{object.date_time}}
+                        </div>
+                        <div class="card-body">
+
+                            <p class="card-text">Статус: {{object.status}}</p>
+                            <p class="card-text">Ответ сервера: {{object.answer_server}}</p>
+                            <p class="card-text">Рассылка: {{object.mailing.message.title}}</p>
+
+                        </div>
+                        <div class="card-footer">
+                            <h6>
+                                Владелец: {{object.owner}}
+                            </h6>
+                        </div>
+
+
+                    </div>
+                </div>
+                {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

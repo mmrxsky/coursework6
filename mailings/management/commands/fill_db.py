@@ -58,19 +58,6 @@ class Command(BaseCommand):
         cur.close()
         conn.close()
 
-        mailings_for_create = []
-
-        for mailings_item in self.get_data_from_mailings():
-            mailings_for_create.append(
-                Mailing(pk=mailings_item["pk"],
-                        time_start=mailings_item["fields"]["time_start"],
-                        time_end=mailings_item["fields"]["time_end"],
-                        period = mailings_item["fields"]["period"],
-                        message=Message.objects.get(pk=mailings_item["message"]),
-                        clients=mailings_item["fields"]["clients"]),
-                        )
-        Mailing.objects.bulk_create(mailings_for_create)
-
         client_for_create = []
 
         for client_item in self.get_data_from_client():
@@ -78,7 +65,7 @@ class Command(BaseCommand):
                 Client(name=client_item["name"],
                        email=client_item["email"],
                        comment=client_item["comment"]),
-                       )
+            )
         Client.objects.bulk_create(client_for_create)
 
         message_for_create = []
@@ -87,5 +74,19 @@ class Command(BaseCommand):
             message_for_create.append(
                 Message(title=message_item["title"],
                         message=message_item["message"]),
-                       )
+            )
         Message.objects.bulk_create(message_for_create)
+
+        mailings_for_create = []
+
+        for mailings_item in self.get_data_from_mailings():
+            mailings_for_create.append(
+                Mailing(pk=mailings_item["pk"],
+                        time_start=mailings_item['fields']["time_start"],
+                        time_end=mailings_item['fields']["time_end"],
+                        period = mailings_item['fields']["period"],
+                        message=Message.objects.get(pk=mailings_item['fields']['message']),
+
+                        clients=Client.objects.get(pk=mailings_item['fields']["clients"][0])),
+                        )
+        Mailing.objects.bulk_create(mailings_for_create)

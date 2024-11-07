@@ -1,0 +1,1 @@
+[{"model": "mailings.client", "pk": 1, "fields": {"email": "rolissk@yandex.com", "name": "rolissk", "comment": "Адрес, созданный для тестирования отправки сообщений"}}, {"model": "mailings.client", "pk": 2, "fields": {"email": "logwws@gmail.com", "name": "lgwws", "comment": "Адрес не настроен, сообщение скорее всего не дойдет"}}]
