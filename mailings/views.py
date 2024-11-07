@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 
+
 from django.views.generic import (
     TemplateView,
     ListView,
@@ -37,6 +38,7 @@ class MailingsCreateView(CreateView):
     success_url = reverse_lazy("mailings:mailings_list")
 
     # def get_form_kwargs(self):
+
     #     kwargs = super().get_form_kwargs()
     #     kwargs.update({'request': self.request})
     #     return kwargs
@@ -45,6 +47,17 @@ class MailingsCreateView(CreateView):
     #     queryset = super().get_queryset()
     #     user = self.request.user
     #     return queryset.filter(user=user)
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        user = self.request.user
+        # if user.is_superuser:
+        #     queryset = queryset
+        # else:
+        queryset = queryset.filter(owner_id=user.id)
+        return queryset
+
+
 
     def form_valid(self, form):
         mailing = form.save()
@@ -144,6 +157,7 @@ class MessageDeleteView(DeleteView):
 class LogsListView(ListView):
     model = Log
     template_name = "mailings_app/logs_list.html"
+
 
 
 def logs_delete(request):

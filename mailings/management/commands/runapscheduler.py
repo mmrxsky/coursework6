@@ -12,13 +12,13 @@ from django_apscheduler import util
 from django.utils import timezone
 
 from mailings.models import Mailing, Log
-
 from django.core.mail import send_mail
-
 from config.settings import EMAIL_HOST_USER
 
 logger = logging.getLogger(__name__)
 scheduler = BlockingScheduler(timezone=settings.TIME_ZONE)
+
+from django.utils import timezone
 
 
 def change_status():
@@ -26,13 +26,12 @@ def change_status():
         if timezone.now().time() < mailing.time_start:
             mailing.status = "created"
 
+
         elif mailing.time_start <= timezone.now().time() <= mailing.time_end:
             mailing.status = "started"
 
         elif mailing.time_end < timezone.now().time():
             mailing.status = "done"
-            # if Log.objects.filter(mailing=mailing).exists():
-            #     scheduler.remove_job(mailing.pk)
 
         mailing.save()
 
@@ -43,11 +42,10 @@ def start_or_not_mailing():
         logs = Log.objects.filter(mailing=mailing)
         if not logs.exists():
             add_job(mailing)
-            # Log.objects.create(answer_server='Отправлено', mailing=mailing)
 
 
 def send_mailings(mailing):
-    Log.objects.create(answer_server="Отправлено", mailing=mailing)
+    Log.objects.create(answer_server="Отправлено", mailing=mailing, owner=mailing.owner)
     title = mailing.message.title
     message = mailing.message.message
     from_email = EMAIL_HOST_USER
@@ -59,7 +57,6 @@ def send_mailings(mailing):
         from_email=from_email,
         recipient_list=to_emails,
     )
-
 
 def add_job(mailing):
     if mailing.period == "daily":
@@ -82,6 +79,13 @@ def add_job(mailing):
         args=[mailing],
         replace_existing=True,
     )
+
+class TimeIsOverError(Exception):
+    """ Вызывается по истечении времени """
+    pass
+
+def time_end(mailing):
+    return mailing.time_end
 
 
 class Command(BaseCommand):
@@ -107,11 +111,14 @@ class Command(BaseCommand):
             replace_existing=True,
         )
 
-        logger.info("Added weekly job: 'delete_old_job_executions'.")
+        logger.info(
+            "Added weekly job: 'delete_old_job_executions'."
+        )
 
         try:
             logger.info("Starting scheduler...")
             scheduler.start()
+
         except KeyboardInterrupt:
             logger.info("Stopping scheduler...")
             scheduler.shutdown()
