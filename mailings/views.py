@@ -30,6 +30,13 @@ class MailingsCreateView(CreateView):
     form_class = MailingForm
     success_url = reverse_lazy('mailings:mailings_list')
 
+    # def get_form_kwargs(self):
+    #     """ Добавляем в аргументы kwargs self.request, чтобы можно было получить его в форме """
+    #
+    #     kwargs = super().get_form_kwargs()
+    #     kwargs.update({'request': self.request})
+    #     return kwargs
+
     def form_valid(self, form):
         mailing = form.save()
         user = self.request.user
