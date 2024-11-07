@@ -4,32 +4,39 @@
 <br>
 <div class="container">
 
-    <br>
-    <div class="row">
-                {% for object in object_list %}
-                <div class="col">
-                    <div class="card text-center">
-                        <div class="card-header">
-                            Дата и время: {{object.date_time}}
+        {% if object_list.count > 0 %}
+            <div class="text-end">
+                <a class="btn btn-light m-3" href="{% url 'mailings:logs_delete' %}">Очистить</a>
+            </div>
+            <br>
+            <div class="row">
+                        {% for object in object_list %}
+                        <div class="col">
+                            <div class="card text-center">
+                                <div class="card-header">
+                                    Дата и время: {{object.date_time}}
+                                </div>
+                                <div class="card-body">
+
+                                    <p class="card-text">Статус: {{object.status}}</p>
+                                    <p class="card-text">Ответ сервера: {{object.answer_server}}</p>
+                                    <p class="card-text">Рассылка: {{object.mailing.message.title}}</p>
+
+                                </div>
+                                <div class="card-footer">
+                                    <h6>Владелец: {{object.owner}}</h6>
+                                </div>
+
+
+                            </div>
                         </div>
-                        <div class="card-body">
-
-                            <p class="card-text">Статус: {{object.status}}</p>
-                            <p class="card-text">Ответ сервера: {{object.answer_server}}</p>
-                            <p class="card-text">Рассылка: {{object.mailing.message.title}}</p>
-
-                        </div>
-                        <div class="card-footer">
-                            <h6>
-                                Владелец: {{object.owner}}
-                            </h6>
-                        </div>
-
-
-                    </div>
-                </div>
-                {% endfor %}
-    </div>
+                        {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center">
+                <h2>Здесь пока ничего нет</h2>
+            </div>
+        {% endif %}
 </div>
 
 {% endblock %}

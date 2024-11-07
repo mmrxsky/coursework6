@@ -54,9 +54,9 @@ class Mailing(models.Model):
     STATUS_DONE = "done"
 
     STATUSES = (
-        (STATUS_CREATED, "Создана"),
-        (STATUS_STARTED, "Запущена"),
-        (STATUS_DONE, "Выполнена"),
+        (STATUS_CREATED, "created"),
+        (STATUS_STARTED, "started"),
+        (STATUS_DONE, "done"),
     )
 
     time_start = models.TimeField(verbose_name="Время начала")

@@ -1,4 +1,5 @@
 from django.forms import inlineformset_factory
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 
@@ -143,3 +144,9 @@ class MessageDeleteView(DeleteView):
 class LogsListView(ListView):
     model = Log
     template_name = "mailings_app/logs_list.html"
+
+
+def logs_delete(request):
+    logs = Log.objects.all()
+    logs.delete()
+    return HttpResponseRedirect('/mailings_list/')
