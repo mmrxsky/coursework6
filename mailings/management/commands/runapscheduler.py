@@ -18,14 +18,11 @@ from config.settings import EMAIL_HOST_USER
 logger = logging.getLogger(__name__)
 scheduler = BlockingScheduler(timezone=settings.TIME_ZONE)
 
-from django.utils import timezone
-
 
 def change_status():
     for mailing in Mailing.objects.all():
         if timezone.now().time() < mailing.time_start:
             mailing.status = "created"
-
 
         elif mailing.time_start <= timezone.now().time() <= mailing.time_end:
             mailing.status = "started"
@@ -53,10 +50,12 @@ def send_mailings(mailing):
 
     send_mail(
         subject=title,
-        message=message,
+        message=
+        message,
         from_email=from_email,
         recipient_list=to_emails,
     )
+
 
 def add_job(mailing):
     if mailing.period == "daily":
@@ -79,13 +78,6 @@ def add_job(mailing):
         args=[mailing],
         replace_existing=True,
     )
-
-class TimeIsOverError(Exception):
-    """ Вызывается по истечении времени """
-    pass
-
-def time_end(mailing):
-    return mailing.time_end
 
 
 class Command(BaseCommand):

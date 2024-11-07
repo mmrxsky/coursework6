@@ -1,10 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'mailings_app/base.html' %}
 
-</body>
-</html>
+{% block content %}
+
+<br>
+
+<div class="container">
+    <h5 class="text-center">Действительно желаете удалить '{{object.title}}'?</h5>
+        <div class="text-center">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <a class="btn btn-light m-3" href="{% url 'blog:blog_detail' object.pk %}">Отменить</a>
+                <button type="submit" class="btn btn-danger m-3">Да, удалить</button>
+            </form>
+        </div>
+</div>
+
+{% endblock %}

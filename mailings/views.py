@@ -37,27 +37,19 @@ class MailingsCreateView(CreateView):
     form_class = MailingForm
     success_url = reverse_lazy("mailings:mailings_list")
 
-    # def get_form_kwargs(self):
-
-    #     kwargs = super().get_form_kwargs()
-    #     kwargs.update({'request': self.request})
-    #     return kwargs
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({'request': self.request})
+        return kwargs
 
     # def get_queryset(self):
     #     queryset = super().get_queryset()
     #     user = self.request.user
-    #     return queryset.filter(user=user)
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        user = self.request.user
-        # if user.is_superuser:
-        #     queryset = queryset
-        # else:
-        queryset = queryset.filter(owner_id=user.id)
-        return queryset
-
-
+    #     # if user.is_superuser:
+    #     #     queryset = queryset
+    #     # else:
+    #     queryset = queryset.filter(owner_id=user.id)
+    #     return queryset
 
     def form_valid(self, form):
         mailing = form.save()
@@ -157,7 +149,6 @@ class MessageDeleteView(DeleteView):
 class LogsListView(ListView):
     model = Log
     template_name = "mailings_app/logs_list.html"
-
 
 
 def logs_delete(request):
