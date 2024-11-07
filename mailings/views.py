@@ -3,7 +3,6 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 
-
 from django.views.generic import (
     TemplateView,
     ListView,
@@ -13,13 +12,32 @@ from django.views.generic import (
     DeleteView,
 )
 
-from mailings.forms import MailingForm, MessageForm, ClientForm
+from mailings.forms import MailingForm, MessageForm, ClientForm, MailingChangeStatusForm
 from mailings.models import Mailing, Message, Client, Log
-
+from blog.models import Blog
 
 class StartPageView(TemplateView):
     template_name = "mailings_app/index.html"
 
+    def get_context_data(self, *args, **kwargs):
+        context_data = super().get_context_data(*args, **kwargs)
+
+        mailing_count = Mailing.objects.all().count()
+        mailing_active_count = Mailing.objects.exclude(status = "done").count()
+        client_unique = Client.objects.all().distinct().count()
+        blog_random = Blog.objects.order_by('?')[:3]
+        blog_1 = blog_random[0]
+        blog_2 = blog_random[1]
+        blog_3 = blog_random[2]
+
+        context_data["mailing_count"] = mailing_count
+        context_data["mailing_active_count"] = mailing_active_count
+        context_data["client_unique"] = client_unique
+        context_data["blog_1"] = blog_1
+        context_data["blog_2"] = blog_2
+        context_data["blog_3"] = blog_3
+
+        return context_data
 
 class MailingsListView(ListView):
     model = Mailing
@@ -39,19 +57,13 @@ class MailingsCreateView(CreateView):
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
+        # if not self.request.user.is_superuser:
         kwargs.update({'request': self.request})
         return kwargs
 
-    # def get_queryset(self):
-    #     queryset = super().get_queryset()
-    #     user = self.request.user
-    #     # if user.is_superuser:
-    #     #     queryset = queryset
-    #     # else:
-    #     queryset = queryset.filter(owner_id=user.id)
-    #     return queryset
 
     def form_valid(self, form):
+        """Добавление владельца рассылке"""
         mailing = form.save()
         user = self.request.user
         mailing.owner = user
@@ -65,10 +77,22 @@ class MailingsUpdateView(UpdateView):
     form_class = MailingForm
     success_url = reverse_lazy("mailings:mailings_list")
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        # if not self.request.user.is_superuser:
+        kwargs.update({'request': self.request})
+        return kwargs
 
 class MailingsDeleteView(DeleteView):
     model = Mailing
     template_name = "mailings_app/mailings_confirm_delete.html"
+    success_url = reverse_lazy("mailings:mailings_list")
+
+
+class MailingsChangeStatusView(UpdateView):
+    model = Mailing
+    template_name = "mailings_app/mailings_change_status.html"
+    form_class = MailingChangeStatusForm
     success_url = reverse_lazy("mailings:mailings_list")
 
 
@@ -89,6 +113,7 @@ class ClientCreateView(CreateView):
     success_url = reverse_lazy("mailings:client_list")
 
     def form_valid(self, form):
+        """Добавление владельца клиенту"""
         client = form.save()
         user = self.request.user
         client.owner = user
@@ -126,6 +151,7 @@ class MessageCreateView(CreateView):
     success_url = reverse_lazy("mailings:message_list")
 
     def form_valid(self, form):
+        """Добавление владельца сообщению"""
         message = form.save()
         user = self.request.user
         message.owner = user
@@ -152,6 +178,7 @@ class LogsListView(ListView):
 
 
 def logs_delete(request):
+    """ Удаление логов """
     logs = Log.objects.all()
     logs.delete()
     return HttpResponseRedirect('/mailings_list/')

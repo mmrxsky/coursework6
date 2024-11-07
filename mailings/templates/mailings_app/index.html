@@ -4,4 +4,35 @@
 
 <h1 class="text-center">Добро пожаловать на сервис управления рассылками!</h1>
 
+
+    <div class="container">
+        <br>
+        <div class="row">
+            <div class="col-3">
+
+            </div>
+            <div class="col-6">
+                <div class="card text-center" style="width: 18rem;">
+                    <div class="card-header text-center">
+                        На данный момент
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">Количество рассылок: {{mailing_count}}</p>
+                        <p class="card-text">Из них активных: {{mailing_active_count}}</p>
+                        <p class="card-text">Количество уникальных клиентов: {{client_unique}}</p>
+                        <p class="card-text">Некоторые статьи из блога: {{blog_random}}</p>
+                    </div>
+                    <div class="card-footer">
+                        <h6>
+                        </h6>
+                    </div>
+                </div>
+            </div>
+
+                <div class="col-3">
+                </div>
+        </div>
+    </div>
+    </div>
+
 {% endblock %}

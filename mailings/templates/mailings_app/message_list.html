@@ -4,23 +4,21 @@
 <br>
 <div class="container">
     <div class="text-end">
-        <a class="btn btn-outline-secondary" href="{% url 'mailings:message_create' %}">Добавить сообщение</a>
+        {% if not user.is_staff %}
+            <a class="btn btn-outline-secondary" href="{% url 'mailings:message_create' %}">Добавить сообщение</a>
+        {% endif %}
     </div>
     <br>
     <div class="row">
-                {% for object in object_list %}
-<!--                {% if object.owner == user %}-->
+        {% for object in object_list %}
+            {% if user.is_superuser %}
                 <div class="col">
                     <div class="card text-center">
                         <div class="card-header">
                             Название сообщения: {{object.title}}
                         </div>
                         <div class="card-body">
-
                             <p class="card-text">Сообщение: {{object.message}}</p>
-
-
-
                             <a href="{% url 'mailings:message_detail' object.pk %}" class="btn btn-primary">Подробнее</a>
                             <div>
                                 <br>
@@ -30,15 +28,33 @@
                         </div>
                         <div class="card-footer">
                             <h6>
-
                             </h6>
                         </div>
-
-
                     </div>
                 </div>
-<!--                {% endif %}-->
-                {% endfor %}
+            {% elif object.owner == user %}
+                <div class="col">
+                    <div class="card text-center">
+                        <div class="card-header">
+                            Название сообщения: {{object.title}}
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Сообщение: {{object.message}}</p>
+                            <a href="{% url 'mailings:message_detail' object.pk %}" class="btn btn-primary">Подробнее</a>
+                            <div>
+                                <br>
+                                <p>Владелец:</p>
+                                <p>{{object.owner}}</p>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <h6>
+                            </h6>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
     </div>
 </div>
 

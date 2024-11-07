@@ -1,6 +1,7 @@
 {% extends 'mailings_app/base.html' %}
 
 {% block content %}
+
 <br>
     <form method="post" enctype="multipart/form-data">
         <div class="row">
@@ -12,17 +13,13 @@
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">
-
+                            <h3>Активация(деактивация) пользователя {{object.email}}</h3>
                     </div>
                 </div>
                 <div class="card-body">
-
                     {% csrf_token %}
                     {{ form.as_p }}
-
-                    <button type="submit" class="btn btn-success">Войти</button>
-<!--                    <a class="p-l-2 btn btn-primary" href="#">Забыли пароль?</a>-->
-
+                    <button type="submit" class="btn btn-success">Подтвердить</button>
                 </div>
             </div>
         </div>

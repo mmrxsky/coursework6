@@ -8,8 +8,8 @@ class StyleMixin(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         for field_name, field in self.fields.items():
-            # if field_name != 'current_version_indicator' and field_name != 'publication_sign' and field_name != 'is_published':
-            field.widget.attrs["class"] = "form-control"
+            if field_name != 'is_active':
+                field.widget.attrs["class"] = "form-control"
 
 
 class MailingForm(StyleMixin):
@@ -24,6 +24,12 @@ class MailingForm(StyleMixin):
         super().__init__(*args, **kwargs)
         self.fields["clients"].queryset = Client.objects.filter(owner=user)
         self.fields["message"].queryset = Message.objects.filter(owner=user)
+
+
+class MailingChangeStatusForm(StyleMixin):
+    class Meta:
+        model = Mailing
+        fields = ("status",)
 
 
 class MessageForm(StyleMixin):

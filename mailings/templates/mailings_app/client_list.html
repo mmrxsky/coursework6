@@ -4,41 +4,59 @@
 <br>
 <div class="container">
     <div class="text-end">
-        <a class="btn btn-outline-secondary" href="{% url 'mailings:client_create' %}">Добавить клиента</a>
+        {% if not user.is_staff %}
+            <a class="btn btn-outline-secondary" href="{% url 'mailings:client_create' %}">Добавить клиента</a>
+        {% endif %}
     </div>
     <br>
     <div class="row">
-                {% for object in object_list %}
-<!--                {% if object.owner == user %}-->
+        {% for object in object_list %}
+            {% if user.is_superuser %}
                 <div class="col">
-                    <div class="card text-center">
-                        <div class="card-header">
-                            Клиент: {{object.name}}
-                        </div>
-                        <div class="card-body">
-
-                            <p class="card-text">Email: {{object.email}}</p>
-                            <p class="card-text">Примечание: {{object.comment}}</p>
-
-
-                            <a href="{% url 'mailings:client_detail' object.pk %}" class="btn btn-primary">Подробнее</a>
-                            <div>
-                                <br>
-                                <p>Владелец:</p>
-                                <p>{{object.owner}}</p>
+                        <div class="card text-center">
+                            <div class="card-header">
+                                Клиент: {{object.name}}
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">Email: {{object.email}}</p>
+                                <p class="card-text">Примечание: {{object.comment}}</p>
+                                <a href="{% url 'mailings:client_detail' object.pk %}" class="btn btn-primary">Подробнее</a>
+                                <div>
+                                    <br>
+                                    <p>Владелец:</p>
+                                    <p>{{object.owner}}</p>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <h6>
+                                </h6>
                             </div>
                         </div>
-                        <div class="card-footer">
-                            <h6>
-
-                            </h6>
-                        </div>
-
-
                     </div>
-                </div>
-<!--                {% endif %}-->
-                {% endfor %}
+            {% elif object.owner == user %}
+                <div class="col">
+                        <div class="card text-center">
+                            <div class="card-header">
+                                Клиент: {{object.name}}
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">Email: {{object.email}}</p>
+                                <p class="card-text">Примечание: {{object.comment}}</p>
+                                <a href="{% url 'mailings:client_detail' object.pk %}" class="btn btn-primary">Подробнее</a>
+                                <div>
+                                    <br>
+                                    <p>Владелец:</p>
+                                    <p>{{object.owner}}</p>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <h6>
+                                </h6>
+                            </div>
+                        </div>
+                    </div>
+            {% endif %}
+        {% endfor %}
     </div>
 </div>
 
