@@ -1,6 +1,6 @@
 from django.core.management import BaseCommand
 
-from catalog.models import Product, Category
+from mailings.models import Mailing, Client, Message
 
 import psycopg2
 
@@ -9,25 +9,35 @@ import json
 
 class Command(BaseCommand):
 
-    def get_data_from_category(self):
+    def get_data_from_mailings(self):
 
-        result_category_list = []
-        with open('catalog/fixture/category_data.json', 'r', encoding='utf-8') as file:
-            category_json = json.load(file)
+        result_mailings_list = []
+        with open('mailings/fixtures/mailing.json', 'r', encoding='utf-8') as file:
+            mailing_json = json.load(file)
 
-            for item in category_json:
-                result_category_list.append(item)
-        return result_category_list
+            for item in mailing_json:
+                result_mailings_list.append(item)
+        return result_mailings_list
 
-    def get_data_from_product(self):
+    def get_data_from_client(self):
 
-        result_product_list = []
-        with open('catalog/fixture/product_data.json', 'r', encoding='utf-8') as file:
-            product_json = json.load(file)
+        result_client_list = []
+        with open('mailings/fixtures/client.json', 'r', encoding='utf-8') as file:
+            client_json = json.load(file)
 
-            for item in product_json:
-                result_product_list.append(item['fields'])
-        return result_product_list
+            for item in client_json:
+                result_client_list.append(item['fields'])
+        return result_client_list
+
+    def get_data_from_message(self):
+
+        result_message_list = []
+        with open('mailings/fixtures/message.json', 'r', encoding='utf-8') as file:
+            message_json = json.load(file)
+
+            for item in message_json:
+                result_message_list.append(item['fields'])
+        return result_message_list
 
     def handle(self, *args, **options):
 
@@ -41,34 +51,41 @@ class Command(BaseCommand):
 
         with conn.cursor() as cur:
             cur.execute("""
-                            TRUNCATE TABLE catalog_product RESTART IDENTITY CASCADE;
-                            TRUNCATE TABLE catalog_category RESTART IDENTITY CASCADE;
+                            TRUNCATE TABLE mailings_mailing RESTART IDENTITY CASCADE;
+                            TRUNCATE TABLE mailings_client RESTART IDENTITY CASCADE;
+                            TRUNCATE TABLE mailings_message RESTART IDENTITY CASCADE;
                         """)
         cur.close()
         conn.close()
 
+        mailings_for_create = []
 
-        # Product.objects.all().delete()
-        # Category.objects.all().delete()
-
-        category_for_create = []
-
-        for category_item in self.get_data_from_category():
-            category_for_create.append(
-                Category(pk=category_item["pk"],
-                         name=category_item["fields"]["name"],
-                         description=category_item["fields"]["description"])
+        for mailings_item in self.get_data_from_mailings():
+            mailings_for_create.append(
+                Mailing(pk=mailings_item["pk"],
+                        time_start=mailings_item["fields"]["time_start"],
+                        time_end=mailings_item["fields"]["time_end"],
+                        period = mailings_item["fields"]["period"],
+                        message=Message.objects.get(pk=mailings_item["message"]),
+                        clients=mailings_item["fields"]["clients"]),
                         )
-        Category.objects.bulk_create(category_for_create)
+        Mailing.objects.bulk_create(mailings_for_create)
 
-        product_for_create = []
+        client_for_create = []
 
-        for product_item in self.get_data_from_product():
-            product_for_create.append(
-                Product(name=product_item["name"],
-                        description=product_item["description"],
-                        image=product_item["image"],
-                        category=Category.objects.get(pk=product_item["category"]),
-                        price=product_item["price"])
-                        )
-        Product.objects.bulk_create(product_for_create)
+        for client_item in self.get_data_from_client():
+            client_for_create.append(
+                Client(name=client_item["name"],
+                       email=client_item["email"],
+                       comment=client_item["comment"]),
+                       )
+        Client.objects.bulk_create(client_for_create)
+
+        message_for_create = []
+
+        for message_item in self.get_data_from_message():
+            message_for_create.append(
+                Message(title=message_item["title"],
+                        message=message_item["message"]),
+                       )
+        Message.objects.bulk_create(message_for_create)
