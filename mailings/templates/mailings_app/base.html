@@ -1,0 +1,66 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Рассылки</title>
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  </head>
+  <body>
+    <div class="container-xxl">
+
+
+
+        <br>
+        <div class="row text-start">
+            <div class="col-sm-5">
+
+                {% include 'mailings_app/includes/inc_base.html' %}
+
+            </div>
+            <div class="col-sm-4">
+
+            </div>
+            <div class="col-sm-3">
+
+            </div>
+        </div>
+    </div>
+
+    {% block content %}
+    {% endblock %}
+
+
+    <div class="container-xxl">
+        <footer class="pt-4 my-md-5 pt-md-5 border-top">
+        <br>
+        <div class="row">
+            <div class="col-12 col-md">
+
+                <small class="d-block mb-3 text-muted">&copy; 2024</small>
+            </div>
+            <div class="col-6 col-md">
+
+            </div>
+
+            <div class="col-6 col-md">
+
+
+            </div>
+            <div class="col-6 col-md">
+
+
+            </div>
+            <div class="col-6 col-md">
+
+            </div>
+
+        </div>
+    </footer>
+    </div>
+
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}}" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+  </body>
+</html>
