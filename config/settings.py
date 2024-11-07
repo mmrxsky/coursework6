@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -21,12 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-^_1c6e0v4c2)nmt_6(4uxz2u5)@!h+0wuy427vdkq=e=62wj^y"
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG") == "True"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -81,11 +82,11 @@ WSGI_APPLICATION = "config.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "course_6",
-        "USER": "postgres",
+        "NAME": os.getenv("NAME"),
+        "USER": os.getenv("USER"),
         "HOST": "127.0.0.1",
         "PORT": 5432,
-        "PASSWORD": "2468",
+        "PASSWORD": os.getenv("PASSWORD")
     }
 }
 
@@ -143,12 +144,12 @@ LOGOUT_REDIRECT_URL = "/"
 # REDIRECT_LOGIN_URL = '/users/login'
 LOGIN_URL = '/users/login/'
 #
-EMAIL_HOST = "smtp.yandex.ru"
-EMAIL_PORT = 465
-EMAIL_USE_TLS = False
-EMAIL_USE_SSL = True
-EMAIL_HOST_USER = "rolissk@yandex.com"
-EMAIL_HOST_PASSWORD = "lheodsngqlceobtz"
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_PORT = os.getenv('EMAIL_PORT')
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS') == 'True'
+EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL') == 'True'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
 SERVER_EMAIL = EMAIL_HOST_USER
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
@@ -161,6 +162,6 @@ if CACHE_ENABLED:
     CACHES = {
         'default': {
         'BACKEND': 'django.core.cache.backends.redis.RedisCache',
-        'LOCATION': 'redis://138.124.31.121:6379'
+        'LOCATION': os.getenv('LOCATION')
         }
     }
