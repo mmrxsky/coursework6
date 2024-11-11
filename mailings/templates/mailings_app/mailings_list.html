@@ -1,0 +1,73 @@
+{% extends 'mailings_app/base.html' %}
+
+{% block content %}
+<br>
+<div class="container">
+    <div class="text-end">
+        {% if not user.is_staff or user.is_superuser %}
+            <a class="btn btn-outline-secondary" href="{% url 'mailings:mailings_create' %}">Создать рассылку</a>
+        {% endif %}
+        <a class="p-l-2 btn btn-outline-primary" href="{% url 'mailings:logs_list' %}">Логи</a>
+    </div>
+    <br>
+    <div class="row">
+        {% for object in object_list %}
+            {% if user.is_superuser or user.is_staff %}
+                <div class="col">
+                    <div class="card text-center">
+                        <div class="card-header">
+                            Тема рассылки: {{object.message.title}}
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Старт рассылки: {{object.time_start}}</p>
+                            <p class="card-text">Окончание рассылки: {{object.time_end}}</p>
+                            {% if user == object.owner or user.is_superuser %}
+                                <a href="{% url 'mailings:mailings_detail' object.pk %}" class="btn btn-primary">Подробнее</a>
+                            {% else %}
+                                {% if perms.mailings.can_change_status %}
+                                    <a href="{% url 'mailings:mailings_change_status' object.pk %}" class="btn btn-primary">Изменить статус</a>
+                                {% endif %}
+                            {% endif %}
+                            <div>
+                                <br>
+                                <p>Владелец:</p>
+                                <p>{{object.owner}}</p>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <h6>
+                               Статус: {{object.status}}
+                            </h6>
+                        </div>
+                    </div>
+                </div>
+            {% elif object.owner == user %}
+                <div class="col">
+                    <div class="card text-center">
+                        <div class="card-header">
+                            Тема рассылки: {{object.message.title}}
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Старт рассылки: {{object.time_start}}</p>
+                            <p class="card-text">Окончание рассылки: {{object.time_end}}</p>
+
+                            <div>
+                                <br>
+                                <p>Владелец:</p>
+                                <p>{{object.owner}}</p>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <a href="{% url 'mailings:mailings_detail' object.pk %}" class="btn btn-primary">Подробнее</a>
+                            <h6>
+                               Статус: {{object.status}}
+                            </h6>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
