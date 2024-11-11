@@ -57,16 +57,23 @@ class Mailing(models.Model):
         (STATUS_CREATED, "created"),
         (STATUS_STARTED, "started"),
         (STATUS_DONE, "done"),
-
     )
 
     time_start = models.TimeField(verbose_name="Время начала")
     time_end = models.TimeField(verbose_name="Время окончания")
-    period = models.CharField(max_length=20, default="daily", choices=PERIODS, verbose_name="Период")
-    status = models.CharField(max_length=20, default=STATUS_CREATED, choices=STATUSES, verbose_name="Статус")
-    message = models.ForeignKey(Message, on_delete=models.CASCADE, verbose_name="Сообщение")
+    period = models.CharField(
+        max_length=20, default="daily", choices=PERIODS, verbose_name="Период"
+    )
+    status = models.CharField(
+        max_length=20, default=STATUS_CREATED, choices=STATUSES, verbose_name="Статус"
+    )
+    message = models.ForeignKey(
+        Message, on_delete=models.CASCADE, verbose_name="Сообщение"
+    )
     clients = models.ManyToManyField(Client, verbose_name="Клиенты")
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Владелец", **NULLABLE)
+    owner = models.ForeignKey(
+        User, on_delete=models.CASCADE, verbose_name="Владелец", **NULLABLE
+    )
 
     def __str__(self):
         return f"{self.time_start} ({self.period})"

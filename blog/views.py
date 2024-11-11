@@ -2,7 +2,11 @@ from blog.services import get_data_from_cache
 from django.shortcuts import render
 
 from django.urls import reverse_lazy
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    UserPassesTestMixin,
+)
 from blog.forms import BlogForm
 from blog.models import Blog
 

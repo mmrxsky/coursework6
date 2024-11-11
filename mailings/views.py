@@ -2,7 +2,11 @@ import random
 
 from django.forms import inlineformset_factory
 from django.http import HttpResponseRedirect
-from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import (
+    PermissionRequiredMixin,
+    LoginRequiredMixin,
+    UserPassesTestMixin,
+)
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -64,7 +68,7 @@ class MailingsCreateView(LoginRequiredMixin, CreateView):
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         # if not self.request.user.is_superuser:
-        kwargs.update({'request': self.request})
+        kwargs.update({"request": self.request})
         return kwargs
 
     def form_valid(self, form):
@@ -85,7 +89,7 @@ class MailingsUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         # if not self.request.user.is_superuser:
-        kwargs.update({'request': self.request})
+        kwargs.update({"request": self.request})
         return kwargs
 
     def test_func(self):
@@ -109,7 +113,6 @@ class MailingsChangeStatusView(LoginRequiredMixin, PermissionRequiredMixin, Upda
     form_class = MailingChangeStatusForm
     success_url = reverse_lazy("mailings:mailings_list")
     permission_required = ("mailings.can_change_status",)
-
 
 
 class ClientListView(LoginRequiredMixin, ListView):
@@ -216,9 +219,10 @@ class LogsListView(LoginRequiredMixin, ListView):
     model = Log
     template_name = "mailings_app/logs_list.html"
 
+
 @login_required
 def logs_delete(request):
-    """ Удаление логов """
+    """Удаление логов"""
     logs = Log.objects.all()
     logs.delete()
-    return HttpResponseRedirect('/mailings_list/')
+    return HttpResponseRedirect("/mailings_list/")

@@ -1,5 +1,9 @@
 from django.shortcuts import render
-from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import (
+    PermissionRequiredMixin,
+    LoginRequiredMixin,
+    UserPassesTestMixin,
+)
 import random
 import secrets
 

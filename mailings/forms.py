@@ -8,7 +8,7 @@ class StyleMixin(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         for field_name, field in self.fields.items():
-            if field_name != 'is_active':
+            if field_name != "is_active":
                 field.widget.attrs["class"] = "form-control"
 
 

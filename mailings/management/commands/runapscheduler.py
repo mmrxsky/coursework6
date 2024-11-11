@@ -50,8 +50,7 @@ def send_mailings(mailing):
 
     send_mail(
         subject=title,
-        message=
-        message,
+        message=message,
         from_email=from_email,
         recipient_list=to_emails,
     )
@@ -103,9 +102,7 @@ class Command(BaseCommand):
             replace_existing=True,
         )
 
-        logger.info(
-            "Added weekly job: 'delete_old_job_executions'."
-        )
+        logger.info("Added weekly job: 'delete_old_job_executions'.")
 
         try:
             logger.info("Starting scheduler...")
